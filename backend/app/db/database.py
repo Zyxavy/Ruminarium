@@ -20,3 +20,10 @@ def test_db_connection():
         print(f"Database connection error: {e}")
         return False
 
+def get_db():
+    db = SessionLocal()
+
+    try:
+        yield db
+    finally:
+        db.close()
