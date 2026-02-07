@@ -1,8 +1,11 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from .database import test_db_connection
+
+from .db.database import test_db_connection, engine, Base
+from .models import user
 
 app = FastAPI()
+Base.metadata.create_all(bind=engine)
 
 #origins that are allowed to talk to this API
 origins = [
