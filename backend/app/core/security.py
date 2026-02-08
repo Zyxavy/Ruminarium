@@ -3,6 +3,7 @@ from typing import Optional
 from jose import jwt
 from passlib.context import CryptContext
 from dotenv import load_dotenv
+import hashlib
 import os
 
 load_dotenv()
@@ -13,7 +14,10 @@ SECRET_KEY = os.getenv("SECRET_KEY")
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 30
 
-pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
+if not SECRET_KEY:
+    raise RuntimeError("SECRET_KEY is not set")
+
+pwd_context = CryptContext(schemes=["argon2"], deprecated="auto")
 
 def get_password_hash(password: str) -> str:
     return pwd_context.hash(password) # Hash a password
