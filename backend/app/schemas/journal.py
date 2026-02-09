@@ -10,8 +10,9 @@ class JournalBase(BaseModel):
 class JournalCreate(JournalBase):
     pass
 
-class JournalUpdate(JournalBase):
-    pass
+class JournalUpdate(BaseModel):
+    title: Optional[str] = None
+    content: Optional[str] = None
 
 class JournalRead(JournalBase):
     id: UUID

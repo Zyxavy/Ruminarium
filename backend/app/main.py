@@ -2,6 +2,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from .api.v1.auth import router as auth_router
+from .api.v1.journals import router as journal_router
 from .db.database import test_db_connection, engine, Base
 from .models import user
 
@@ -15,6 +16,7 @@ origins = [
 ]
 
 app.include_router(auth_router, prefix="/api/v1/auth", tags=["auth"])
+app.include_router(journal_router, prefix="/api/v1/journal", tags=["journal"])
 
 app.add_middleware(
     CORSMiddleware, allow_origins=origins,
