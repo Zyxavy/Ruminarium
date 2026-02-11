@@ -5,12 +5,33 @@ services:
     restart: unless-stopped
     environment:
       POSTGRES_USER: user
-      POSTGRES_PASSWORD: password 
+      POSTGRES_PASSWORD: password
       POSTGRES_DB: journal_db
     ports:
       - "5433:5432"
     volumes:
       - postgres_data:/var/lib/postgresql
-    
+
+  backend:
+    build: ./backend
+    container_name: journal_backend
+    restart: always
+    environment:
+      DATABASE_URL: postgresql://user:password@db:5432/journal_db
+      SECRET_KEY: secreto12345
+    depends_on:
+      - db
+    ports:
+      - "8000:8000"
+
+  frontend:
+    build: ./frontend
+    container_name: journal_frontend
+    restart: always
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+
 volumes:
   postgres_data:

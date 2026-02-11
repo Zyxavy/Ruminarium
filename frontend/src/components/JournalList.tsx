@@ -61,26 +61,29 @@ const JournalList: React.FC = () => {
         </div>
       ) : (
         <div className="grid gap-6 md:grid-cols-2">
-          {journals.map((j) => (
-            <div
-              key={j.id}
-              onClick={() => navigate(`/journals/${j.id}`)}
-              className="bg-white p-6 rounded-xl shadow-sm border border-gray-100 hover:border-blue-300 hover:shadow-md cursor-pointer transition-all group"
-            >
-              <div className="flex justify-between items-start mb-2">
-                <h2 className="text-xl font-bold text-gray-800 group-hover:text-blue-600">
-                  {j.title}
-                </h2>
-                <span className="text-xs text-gray-400">
-                  {new Date(j.created_at).toLocaleDateString()}
-                </span>
-              </div>
-              <p className="text-gray-600 line-clamp-3 leading-relaxed">
-                {j.content || "No content provided."}
-              </p>
+        {journals.map((j) => (
+          <div 
+            key={j.id} 
+            onClick={() => navigate(`/journals/${j.id}`)}
+            className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 
+                      hover:shadow-xl hover:-translate-y-1 hover:border-blue-200 
+                      cursor-pointer transition-all duration-300 group"
+          >
+            <div className="flex justify-between items-start mb-3">
+              <h2 className="text-xl font-bold text-gray-800 group-hover:text-blue-600 transition">
+                {j.title}
+              </h2>
+              <span className="text-xs text-gray-400">
+                {new Date(j.created_at).toLocaleDateString()}
+              </span>
             </div>
-          ))}
-        </div>
+
+            <p className="text-gray-600 line-clamp-3 leading-relaxed">
+              {j.content || "No content provided."}
+            </p>
+          </div>
+        ))}
+      </div>
       )}
     </Layout>
   );
