@@ -20,7 +20,7 @@ const Login: React.FC = () => {
     formData.append('password', password);
 
     try {
-      await authService.login(formData);
+      await authService.login(email.trim(), password);
       navigate('/journals');
     } catch (err: any) {
       setError(err.response?.data?.detail || 'Login failed. Please check your credentials.');

@@ -11,9 +11,12 @@ Base.metadata.create_all(bind=engine)
 
 #origins that are allowed to talk to this API
 origins = [
+    "http://localhost",
+    "http://127.0.0.1",
     "http://localhost:5173",
-    "http://127.0.0.1:5173"
+    "http://127.0.0.1:5173",
 ]
+
 
 app.include_router(auth_router, prefix="/api/v1/auth", tags=["auth"])
 app.include_router(journal_router, prefix="/api/v1/journal", tags=["journal"])
