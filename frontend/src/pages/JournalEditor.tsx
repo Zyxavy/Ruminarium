@@ -52,6 +52,22 @@ const JournalEditor: React.FC = () => {
       setIsSaving(false);
     }
   };
+  
+  const handleDelete = async () => {
+  const confirmed = window.confirm(
+    "Are you sure you want to delete this entry? This cannot be undone."
+  );
+
+  if (confirmed && id) {
+    try {
+      await journalServices.deleteJournal(id); 
+      navigate('/journals');
+    } catch (err) {
+      alert("Failed to delete the entry.");
+    }
+  }
+  };
+
 
   if (loading) return <Layout><div className="text-center py-10">Loading entry...</div></Layout>;
 
@@ -81,26 +97,41 @@ const JournalEditor: React.FC = () => {
             />
           </div>
 
-          <div className="flex justify-between items-center pt-6">
-            <button
-              type="button"
-              onClick={() => navigate('/journals')}
-              className="text-gray-500 hover:text-gray-700 font-medium"
-            >
-              Cancel
-            </button>
-            <button
-              type="submit"
-              disabled={isSaving}
-              className="bg-blue-600 text-white px-8 py-3 rounded-xl font-bold hover:bg-blue-700 transition disabled:bg-blue-300"
-            >
-              {isSaving ? 'Saving...' : 'Save Entry'}
-            </button>
+          <div className="flex justify-between items-center pt-6 border-t border-gray-100">
+            {isEditMode ? (
+              <button
+                type="button"
+                onClick={handleDelete}
+                className="text-red-500 hover:text-red-700 font-medium transition"
+              >
+                Delete Entry
+              </button>
+            ) : (
+              <div />
+            )}
+
+            <div className="flex gap-4">
+              <button
+                type="button"
+                onClick={() => navigate('/journals')}
+                className="text-gray-500 hover:text-gray-700 font-medium"
+              >
+                Cancel
+              </button>
+
+              <button
+                type="submit"
+                disabled={isSaving}
+                className="bg-blue-600 text-white px-8 py-3 rounded-xl font-bold hover:bg-blue-700 transition disabled:bg-blue-300"
+              >
+                {isSaving ? 'Saving...' : 'Save Entry'}
+              </button>
+            </div>
           </div>
         </form>
       </div>
     </Layout>
   );
-};
+}
 
 export default JournalEditor;
