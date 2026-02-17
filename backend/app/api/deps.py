@@ -1,3 +1,11 @@
+'''
+Provides authentication related dependencies
+- Extract JWT token from request
+- Validate and decode token
+- Fetch authenticated user from database
+- Protect routes that require login
+'''
+
 from fastapi import Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer
 from jose import jwt, JWTError
@@ -9,8 +17,18 @@ from ..core.security import SECRET_KEY, ALGORITHM
 from ..models.user import User
 from ..schemas.token import TokenData
 
+#Token is obtained from this login endpoint
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/api/v1/auth/login")
 
+
+'''
+This function:
+1. Extracts JWT from Authorization header
+2. Decodes and verifies it
+3. Extracts user ID
+4. Fetches user from database
+5. Returns authenticated user object
+'''
 def get_current_user(db: Session = Depends(get_db), 
                      token: str = Depends(oauth2_scheme)) -> User:
     credentials_exception = HTTPException(

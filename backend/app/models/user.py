@@ -28,7 +28,7 @@ class User(Base):
     created_at = Column(DateTime(timezone=True), server_default=func.now())
     updated_at = Column(DateTime(timezone=True), onupdate=func.now())
 
-    #One to may relationship
+    #One to many relationship
     #If a user is deleted, so is all of their journals
     journals = relationship(
     "Journal",

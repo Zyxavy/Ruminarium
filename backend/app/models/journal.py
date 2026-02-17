@@ -6,7 +6,10 @@ from sqlalchemy.orm import relationship
 
 from ..db.database import Base
 
-
+'''
+Journal model representing the 'journals' table in the database.
+Each journal entry belongs to a specific user.
+'''
 class Journal(Base):
     __tablename__ = "journals"
 

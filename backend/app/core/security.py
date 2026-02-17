@@ -1,3 +1,14 @@
+'''
+Handles authentication logic
+
+- Hashing user passwords securely
+- Verifying passwords during login
+- Generating JWT access tokens
+- Managing token expiration settings
+
+'''
+
+
 from datetime import datetime, timedelta, timezone
 from typing import Optional
 from jose import jwt
@@ -8,15 +19,15 @@ import os
 
 load_dotenv()
 
-
 # Configs
 SECRET_KEY = os.getenv("SECRET_KEY")
-ALGORITHM = "HS256"
+ALGORITHM = "HS256" #JWT signing algo
 ACCESS_TOKEN_EXPIRE_MINUTES = 30
 
 if not SECRET_KEY:
     raise RuntimeError("SECRET_KEY is not set")
 
+#Configure password hashing context
 pwd_context = CryptContext(schemes=["argon2"], deprecated="auto")
 
 def get_password_hash(password: str) -> str:
