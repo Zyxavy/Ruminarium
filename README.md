@@ -1,6 +1,6 @@
-# Ruminarium - Full-Stack Journal App
+# Ruminarium
 
-Ruminarium is a full-stack journaling application built to demonstrate hands-on learning with modern web technologies.
+Ruminarium is a journaling application built to demonstrate hands-on learning with modern web technologies.
 
 It uses **React**, **Vite**, and **Tailwind CSS** for the frontend, **FastAPI** for the backend, and **PostgreSQL** as the database.  
 All services are containerized using **Docker**.
