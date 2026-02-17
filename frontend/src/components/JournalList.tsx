@@ -5,6 +5,15 @@ import { authService } from '../api/auth';
 import type { Journal, User } from '../types';
 import Layout from './Layout';
 
+/**
+ * Main screen displaying the user's list of journal entries.
+ *
+ * Features:
+ * - Fetches current user profile and all journals on mount
+ * - Handles authentication/authorization failures by clearing token and redirecting to login
+ * - Shows loading state, error message, empty state, or grid of journal cards
+ * - Clicking a journal card navigates to the detail/edit view
+ */
 const JournalList: React.FC = () => {
   const [journals, setJournals] = useState<Journal[]>([]);
   const [loading, setLoading] = useState(true);

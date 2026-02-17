@@ -1,6 +1,7 @@
 # Ruminarium - Full-Stack Journal App
 
-Ruminarium is a full-stack journaling application built to demonstrate hands-on learning with modern web technologies.  
+Ruminarium is a full-stack journaling application built to demonstrate hands-on learning with modern web technologies.
+
 It uses **React**, **Vite**, and **Tailwind CSS** for the frontend, **FastAPI** for the backend, and **PostgreSQL** as the database.  
 All services are containerized using **Docker**.
 ---
@@ -29,7 +30,7 @@ All services are containerized using **Docker**.
 
 1. **Clone the repository**
 ```bash
-git clone https://github.com/<your-username>/ruminarium.git
+git clone https://github.com/Zyxavy/Ruminarium.git
 cd ruminarium
 ```
 
@@ -73,22 +74,6 @@ This will build and run three services:
 - Passwords are hashed using Argon2. Make sure argon2-cffi is installed in the backend container.
 
 - Data persists via Docker volume postgres_data.
-
----
-
-### Available Scripts (Frontend)
-
-Inside the frontend container:
-
-- npm run dev – Start dev server (Vite)
-
----
-
-### Available Scripts (Backend)
-
-Inside the backend container:
-
-- uvicorn app.main:app --reload – Start dev server
 
 ---
 

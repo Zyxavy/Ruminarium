@@ -2,6 +2,23 @@ import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { authService } from '../api/auth';
 
+/**
+ * Registration page component.
+ *
+ * Allows new users to create an account with email and password.
+ * On successful registration:
+ *   - Calls authService.register()
+ *   - Redirects to /login with a success message passed via navigation state
+ * On failure:
+ *   - Displays backend error detail (if available) or generic message
+ *   - Shows client-side validation for password mismatch
+ *
+ * Features:
+ * - Client-side password confirmation check
+ * - Loading/disabled state during submission
+ * - Error message display
+ * - Link back to login page
+ */
 const Register: React.FC = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
