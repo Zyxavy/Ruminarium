@@ -1,3 +1,19 @@
+'''
+Auth router
+
+Handles:
+- User registration
+- User login
+- Fetching current authenticated user
+
+This router connects:
+- Database (SQLAlchemy)
+- Security utilities (hashing & JWT)
+- Pydantic schemas
+- FastAPI dependency injection
+
+'''
+
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 from fastapi.security import OAuth2PasswordRequestForm
@@ -12,9 +28,12 @@ from ..deps import get_current_user
 
 router = APIRouter()
 
+#Registration Endpoint
+#Client -> POST /register -> Server creates user and returns user data
 @router.post("/register", response_model=UserRead, status_code=status.HTTP_201_CREATED)
 def register(user_in: UserCreate, db: Session = Depends(get_db)):
     
+    #Check if email exist to prevent duplicates
     existing_usr = db.query(User).filter(User.email == user_in.email).first()
     if existing_usr:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST,
@@ -24,12 +43,15 @@ def register(user_in: UserCreate, db: Session = Depends(get_db)):
 
     new_user = User(email=user_in.email, password_hash=hashed_password)
 
+    #Save to database
     db.add(new_user)
     db.commit()
     db.refresh(new_user)
 
     return new_user
 
+#Login Endpoint
+#Client -> POST /login -> Server validates -> Returns JWT token
 @router.post("/login", response_model=Token)
 def login(form_data: OAuth2PasswordRequestForm = Depends(),
           db: Session = Depends(get_db)):
@@ -52,6 +74,8 @@ def login(form_data: OAuth2PasswordRequestForm = Depends(),
         "token_type": "bearer"
     }
 
+#Get current user Endpoint
+#Client -> GET /me -> Server validates token -> Returns user data
 @router.get("/me", response_model=UserRead)
 def read_users_me(current_user: User = Depends(get_current_user)):
     return current_user
