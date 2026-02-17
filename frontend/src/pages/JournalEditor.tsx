@@ -3,6 +3,20 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { journalServices } from '../api/journal';
 import Layout from '../components/Layout';
 
+/**
+ * Editor page for creating a new journal entry or editing an existing one.
+ *
+ * Route patterns:
+ * - /journals/new - Create mode
+ * - /journals/:id - Edit mode
+ *
+ * Features:
+ * - Loads existing entry data in edit mode (by fetching full list and finding match)
+ * - Simple form with title input and large textarea
+ * - Save (create or update) redirects to list on success
+ * - Delete button (edit mode only) with confirmation
+ * - Basic loading state and error handling
+ */
 const JournalEditor: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();

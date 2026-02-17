@@ -2,6 +2,22 @@ import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { authService } from '../api/auth';
 
+/**
+ * Login page component.
+ *
+ * Allows users to sign in with their email and password.
+ * On successful login:
+ *   - Stores JWT token via authService
+ *   - Redirects to the journal list page (/journals)
+ * On failure:
+ *   - Displays backend error message (if available) or generic fallback
+ *
+ * Features:
+ * - Form validation (HTML5 required)
+ * - Loading/disabled state during submission
+ * - Error message display
+ * - Link to registration page
+ */
 const Login: React.FC = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');

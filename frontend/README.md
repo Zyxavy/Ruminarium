@@ -1,73 +1,108 @@
-# React + TypeScript + Vite
+# Frontend 
+Modern single-page React application (built with Vite + TypeScript + Tailwind CSS) for a personal journaling platform.
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Users can register, log in, create/read/update/delete journal entries, all protected by JWT authentication.
 
-Currently, two official plugins are available:
+## Tech Stack
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- **Framework**: React 18 + TypeScript
+- **Build Tool**: Vite
+- **Routing**: React Router v6
+- **HTTP Client**: Axios (with interceptors for auth & 401 handling)
+- **Styling**: Tailwind CSS
+- **State Management**: Local component state (no Redux/Zustand/Pinia yet)
+- **Authentication**: JWT stored in localStorage
+- **Deployment**: Docker + Nginx (static hosting)
 
-## React Compiler
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+### Directory Breakdown
 
-## Expanding the ESLint configuration
+#### `src/api/`
+API communication layer – centralized Axios instance + service modules.
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+| File                | Purpose                                                                 |
+|---------------------|-------------------------------------------------------------------------|
+| `client.ts`         | Axios instance with baseURL, token interceptor, 401 → logout redirect   |
+| `auth.ts`           | Auth operations: login, register, get current user (`/auth/*`)         |
+| `journal.ts`        | Journal CRUD: list, create, update, delete (`/journal/*`)              |
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+#### `src/components/`
+Reusable UI building blocks.
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+| Component           | Purpose                                                                 |
+|---------------------|-------------------------------------------------------------------------|
+| `Layout.tsx`        | Authenticated layout: sticky navbar, "New Entry" button, logout         |
+| `ProtectedRoute.tsx`| Route guard – redirects to /login if no token in localStorage           |
+| `JournalList.tsx`   | Main journal feed: grid of entry previews, loading/error/empty states   |
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+#### `src/pages/`
+Page-level components mapped to routes.
+
+| Page                | Route                | Purpose                                      |
+|---------------------|----------------------|----------------------------------------------|
+| `Login.tsx`         | `/login`             | Sign-in form (email + password)              |
+| `Register.tsx`      | `/register`          | Sign-up form with password confirmation      |
+| `JournalEditor.tsx` | `/journals/new` or `/journals/:id` | Create or edit journal entry (title + content) |
+
+#### `src/types/`
+Shared TypeScript interfaces used across API, components, and state.
+
+| Type       | Fields / Purpose                                            |
+|------------|-------------------------------------------------------------|
+| `User`     | `id`, `email`, `is_active`                                  |
+| `Token`    | `access_token`, `token_type` (from login response)          |
+| `Journal`  | `id`, `title`, `content?`, `owner_id`, `created_at`, `updated_at` |
+
+#### Root files in `src/`
+
+| File          | Purpose                                                                 |
+|---------------|-------------------------------------------------------------------------|
+| `App.tsx`     | Defines all routes using React Router, wraps in `<Router>`             |
+| `main.tsx`    | Entry point – renders `<App />` into `#root`                            |
+| `index.css`   | Global styles: font stack, body background, custom scrollbar, h1 size  |
+
+## Features Implemented
+
+- JWT-based authentication (login/register + protected routes)
+- Full CRUD for journal entries
+- Responsive design (Tailwind CSS)
+- Loading, error, and empty states
+- Client-side route protection
+- Production-ready Docker + Nginx setup
+
+## Running Locally
+
+```bash
+# Install dependencies
+npm install
+
+# Start development server (Vite)
+npm run dev
+# → http://localhost:5173 (or the port shown)
+
+# Build for production
+npm run build
+
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## Docker Deployment
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+```bash
+# Build the image
+docker build -t myjournal-frontend .
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+# Run locally (maps port 80)
+docker run -p 8080:80 myjournal-frontend
+
+# Or use with docker-compose (recommended with backend)
+docker-compose up --build
 ```
+
+---
+
+# nginx.conf – Custom Nginx Configuration
+This file configures Nginx to:
+
+- Serve the static Vite/React build from /usr/share/nginx/html
+- Support single-page application (SPA) routing by returning index.html for all non-asset paths
+- Proxy API requests (/api/*) to the backend service 

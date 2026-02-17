@@ -1,6 +1,16 @@
 import React from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 
+/**
+ * Root layout wrapper for authenticated pages.
+ *
+ * Provides:
+ * - Sticky top navigation bar with app branding, "New Entry" button, and Logout action
+ * - Centered main content area with responsive max-width
+ * - Consistent background and padding
+ *
+ * Used as a wrapper around all protected routes (journal list, journal detail, new journal, etc.)
+ */
 const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const navigate = useNavigate();
 
