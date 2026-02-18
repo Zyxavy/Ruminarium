@@ -15,6 +15,7 @@ from fastapi.middleware.cors import CORSMiddleware
 #Router Imports
 from .api.v1.auth import router as auth_router
 from .api.v1.journals import router as journal_router
+from .api.v1.ai import router as ai_router
 
 #Database Imports
 from .db.database import test_db_connection, engine, Base
@@ -43,6 +44,8 @@ app.add_middleware(
 #Routes
 app.include_router(auth_router, prefix="/api/v1/auth", tags=["auth"])
 app.include_router(journal_router, prefix="/api/v1/journal", tags=["journal"])
+app.include_router(ai_router, prefix="/api/v1/ai", tags=["AI Assistant"])
+
 
 #API endpoint to verify connections
 @app.get("/health")

@@ -44,7 +44,7 @@ Get a specific journal entry by ID, returns the journal entry if found and owned
 Raises 404 error if entry doesn't exist or doesn't belong to the user.
 '''
 @router.get("/{journal_id}", response_model=JournalRead)
-def read_entries(journal_id: UUID, db: Session = Depends(get_db),current_user = Depends(get_current_user)):
+def read_entry(journal_id: UUID, db: Session = Depends(get_db),current_user = Depends(get_current_user)):
     journal = journal_services.get_journal(db=db, journal_id=journal_id, owner_id=current_user.id)
 
     if not journal:

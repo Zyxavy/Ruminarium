@@ -69,7 +69,7 @@ This will build and run three services:
 
 ### Notes
 
-- The frontend expects the API URL to be http://localhost:8000/api/v1. If you change ports, update frontend/.env or VITE_API_URL.
+- The frontend expects the API URL to be http://localhost:8000/api/v1. 
 
 - Passwords are hashed using Argon2. Make sure argon2-cffi is installed in the backend container.
 

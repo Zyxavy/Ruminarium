@@ -24,7 +24,7 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
       <nav className="bg-white border-b sticky top-0 z-10">
         <div className="max-w-5xl mx-auto px-4 h-16 flex items-center justify-between">
           <Link to="/journals" className="text-xl font-bold text-blue-600">
-            MyJournal
+            Ruminarium
           </Link>
           
           <div className="flex items-center gap-4">

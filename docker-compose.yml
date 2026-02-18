@@ -11,12 +11,27 @@ services:
       - "5433:5432"
     volumes:
       - postgres_data:/var/lib/postgresql
+    
+  llm:
+    build: ./llm
+    container_name: journal_llm
+    profiles: ["ai"] 
+    environment:
+      - GOOGLE_API_KEY=${GOOGLE_API_KEY}
+      - MODEL_PATH=/app/models/tinyllama-1.1b-chat-v1.0.Q4_K_M.gguf
+    volumes:
+      - ./llm/models:/app/models 
+    ports:
+      - "8001:8001"
+    restart: always
 
   backend:
     build: ./backend
     container_name: journal_backend
     restart: always
     environment:
+      LLM_URL: http://llm:8001/suggest
+      LLM_ENABLED: "true"
       DATABASE_URL: postgresql://user:password@db:5432/journal_db
       SECRET_KEY: secreto12345
     depends_on:
