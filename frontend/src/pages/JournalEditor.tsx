@@ -110,7 +110,7 @@ const JournalEditor: React.FC = () => {
   return (
     <Layout>
       {/* AI Assistant Section */}
-      <div className="mb-8 p-6 bg-blue-50 rounded-2xl border border-blue-100 shadow-sm">
+      <div className="mb-8 p-6 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-2xl border border-blue-100 shadow-sm">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div>
             <h3 className="text-lg font-bold text-blue-900 flex items-center gap-2">
@@ -122,67 +122,79 @@ const JournalEditor: React.FC = () => {
           </div>
 
           <div className="flex items-center gap-3">
-  {!isCustomMood ? (
-    <select 
-      value={mood}
-      onChange={(e) => {
-        if (e.target.value === 'custom') {
-          setIsCustomMood(true);
-        } else {
-          setMood(e.target.value);
-        }
-      }}
-      className="rounded-lg border-blue-200 text-sm focus:ring-blue-500"
-    >
-      <option value="neutral">Neutral 😐</option>
-      <option value="happy">Happy 😊</option>
-      <option value="stressed">Stressed 😫</option>
-      <option value="custom">Other... ✍️</option>
-    </select>
-  ) : (
-          <div className="flex items-center gap-2">
-            <input
-              type="text"
-              placeholder="How are you feeling?"
-              value={customMoodText}
-              onChange={(e) => setCustomMoodText(e.target.value)}
-              className="rounded-lg border-blue-200 text-sm focus:ring-blue-500 w-40"
-            />
-            <button 
-              onClick={() => setIsCustomMood(false)}
-              className="text-xs text-gray-400 hover:text-gray-600"
+            {!isCustomMood ? (
+              <select 
+                value={mood}
+                onChange={(e) => {
+                  if (e.target.value === 'custom') {
+                    setIsCustomMood(true);
+                  } else {
+                    setMood(e.target.value);
+                  }
+                }}
+                className="rounded-xl border-blue-200 bg-white text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all px-3 py-2 outline-none"
+              >
+                <option value="neutral">Neutral 😐</option>
+                <option value="happy">Happy 😊</option>
+                <option value="stressed">Stressed 😫</option>
+                <option value="custom">Other... ✍️</option>
+              </select>
+            ) : (
+              <div className="flex items-center gap-2 animate-in fade-in slide-in-from-right-2 duration-300">
+                <input
+                  type="text"
+                  placeholder="How are you feeling?"
+                  value={customMoodText}
+                  onChange={(e) => setCustomMoodText(e.target.value)}
+                  className="rounded-xl border-blue-200 bg-white text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent w-44 px-3 py-2 outline-none shadow-inner"
+                />
+                <button 
+                  onClick={() => setIsCustomMood(false)}
+                  className="p-2 text-gray-400 hover:text-red-500 transition-colors"
+                  title="Go back"
+                >
+                  ✕
+                </button>
+              </div>
+            )}
+
+            <button
+              type="button"
+              onClick={handleGetAiHelp}
+              disabled={isAiLoading || (isCustomMood && !customMoodText)}
+              className="bg-blue-600 text-white px-5 py-2 rounded-xl font-semibold hover:bg-blue-700 active:scale-95 transition-all disabled:opacity-50 disabled:pointer-events-none shadow-md shadow-blue-200"
             >
-              ✕
+              {isAiLoading ? (
+                <span className="flex items-center gap-2">
+                  <svg className="animate-spin h-4 w-4 text-white" viewBox="0 0 24 24">
+                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" />
+                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
+                  </svg>
+                  Thinking...
+                </span>
+              ) : 'Get Suggestion'}
             </button>
           </div>
-        )}
-
-        <button
-          type="button"
-          onClick={handleGetAiHelp}
-          disabled={isAiLoading || (isCustomMood && !customMoodText)}
-          className="..."
-        >
-          {isAiLoading ? 'Thinking...' : 'Get Suggestion'}
-        </button>
-      </div>
         </div>
 
+        {/* The Suggestion Display */}
         {aiSuggestion && (
-          <div className="mt-4 p-4 bg-white rounded-xl border border-blue-200">
-            <p className="text-gray-800 italic">"{aiSuggestion}"</p>
+          <div className="mt-4 p-5 bg-white/80 backdrop-blur-sm rounded-xl border border-blue-200 shadow-inner animate-in zoom-in-95 duration-300">
+            <p className="text-gray-800 italic leading-relaxed font-medium">
+              "{aiSuggestion}"
+            </p>
 
-            <div className="flex gap-4 mt-3">
+            <div className="flex gap-4 mt-4">
               <button
                 onClick={handleUseSuggestion}
-                className="text-sm text-green-600 hover:underline"
+                className="flex items-center gap-1 text-sm font-bold text-emerald-600 hover:text-emerald-700 bg-emerald-50 px-3 py-1.5 rounded-lg transition-colors"
               >
-                Use This
+                <span>✍️</span> Use This
               </button>
 
               <button
                 onClick={() => setAiSuggestion(null)}
-                className="text-sm text-blue-500 hover:underline"
+                className="text-sm font-medium text-gray-500 hover:text-gray-700 px-3 py-1.5 transition-colors"
               >
                 Clear
               </button>
@@ -190,7 +202,6 @@ const JournalEditor: React.FC = () => {
           </div>
         )}
       </div>
-
       {/* Editor Section */}
       <div className="max-w-3xl mx-auto bg-white p-8 rounded-2xl shadow-sm border border-gray-100">
         <form onSubmit={handleSave} className="space-y-6">

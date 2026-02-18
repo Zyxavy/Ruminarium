@@ -9,7 +9,18 @@ import httpx, os
 
 router = APIRouter()
 
+'''
+URL of the LLM suggestion microservice.
+Default assumes docker-compose / same-network service name "llm" + port 8001.
+Override via env: LLM_URL=http://localhost:8002/suggest
+'''
 LLM_SERVICE_URL = os.getenv("LLM_URL", "http://llm:8001/suggest")
+
+'''
+Global on/off switch for AI suggestions.
+Useful during development, testing, cost control, or when the LLM service is down.
+Set LLM_ENABLED=false to quickly disable AI without code changes.
+'''
 LLM_ENABLED = os.getenv("LLM_ENABLED", "true").lower() == "true"
 
 '''
