@@ -9,10 +9,8 @@ import httpx, os
 
 router = APIRouter()
 
-#LLM_SERVICE_URL = os.getenv("LLM_URL", "http://localhost:8001/suggest")
-LLM_SERVICE_URL = "http://host.docker.internal:8001/suggest"
-#LLM_ENABLED = os.getenv("LLM_ENABLED", "true").lower() == "true"
-LLM_ENABLED = True
+LLM_SERVICE_URL = os.getenv("LLM_URL", "http://llm:8001/suggest")
+LLM_ENABLED = os.getenv("LLM_ENABLED", "true").lower() == "true"
 
 '''
 1. Fetches the user's last 3 journals for context.
