@@ -28,7 +28,7 @@ The service exposes a simple HTTP API that the main Ruminarium backend calls whe
 
 ## Local Model Setup
 
-To use a local llm:
+### To use a local llm:
 
 1. Download the model from Hugging Face:
 
@@ -45,6 +45,21 @@ Or manually download [here](https://huggingface.co/TheBloke/TinyLlama-1.1B-Chat-
 
 3. If you use a different filename or quantization level, update MODEL_PATH in your environment.
 
+---
+
+### To use Gemini API 
+
+1. Create a `.env` file in `llm/`, and paste the API key.
+```bash
+GOOGLE_API_KEY=your-api-key
+```
+
+2. (Optional) list `.env` in `.gitignore`.
+```
+#.gitignore
+*.env
+```
+
 ## Running the Service
 
 ### With Docker (Recommended)
@@ -60,7 +75,6 @@ docker compose -d --build
 
 This starts the LLM service on port 8001 (or whatever LLM_PORT is set to).
 
-Open http://localhost:8001/docs in your browser to see the interactive API docs for the LLM.
 
 ## API Endpoints
 
