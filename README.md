@@ -48,6 +48,10 @@ SECRET_KEY=your-super-secret-key
 From the project root:
 
 ```bash
+# With AI assistant
+docker compose --profile ai up --build
+
+# No AI assistant
 docker-compose up --build
 ```
 
