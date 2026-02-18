@@ -45,6 +45,7 @@ Or manually download [here](https://huggingface.co/TheBloke/TinyLlama-1.1B-Chat-
 
 3. If you use a different filename or quantization level, update MODEL_PATH in your environment.
 
+Note: Install MSVC build tools if error occurs.
 ---
 
 ### To use Gemini API 
