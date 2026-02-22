@@ -77,7 +77,7 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
           <div className="flex items-center gap-2 text-gray-500 text-sm font-bold">
              <Sparkles className="w-4 h-4" /> Ruminarium
           </div>
-          <p className="text-xs text-gray-600">© 2024 Ruminarium. Your sanctuary for reflection.</p>
+          <p className="text-xs text-gray-600">© 2026 Ruminarium. Your sanctuary for reflection.</p>
           <div className="flex gap-6 text-xs text-gray-500 font-medium">
             <Link to="#" className="hover:text-white">Privacy</Link>
             <Link to="#" className="hover:text-white">Support</Link>

@@ -171,7 +171,7 @@ const Login: React.FC = () => {
           </div>
 
           <p className="mt-12 text-[10px] text-gray-600 tracking-widest text-center uppercase">
-            © 2024 RUMINARIUM. ALL RIGHTS RESERVED.
+            © 2026 RUMINARIUM. ALL RIGHTS RESERVED.
           </p>
         </div>
       </div>
