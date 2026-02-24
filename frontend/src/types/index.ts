@@ -40,3 +40,12 @@ export interface Journal
     created_at: string;
     updated_at: string;
 }
+
+//Represents a search result from journal entries.
+export type JournalSearchResult = {
+  id: string;
+  title: string;
+  snippet: string | null;
+  created_at: string;
+  rank: number | null;
+}

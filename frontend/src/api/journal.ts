@@ -9,7 +9,7 @@
  */
 
 import apiClient from "./client";
-import type { Journal } from "../types";
+import type { Journal, JournalSearchResult } from "../types";
 
 export const journalServices = {
   /**
@@ -20,6 +20,13 @@ export const journalServices = {
     const response = await apiClient.get<Journal[]>("/journal/");
     return response.data;
   },
+
+ searchJournals: async (query: string): Promise<JournalSearchResult[]> => {
+  const response = await apiClient.get<JournalSearchResult[]>("/journal/search", {
+    params: { q: query }
+  });
+  return response.data;
+},
 
   /**
    * Fetch a single journal entry by ID
