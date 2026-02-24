@@ -39,7 +39,9 @@ def read_entries(skip: int = 0, limit: int = 100,
                  current_user = Depends(get_current_user)):
     return journal_services.get_journals(db=db, owner_id=current_user.id, skip=skip, limit=limit)
 
-
+'''
+The search is performed on the journal content and returns matching entries with pagination support.
+'''
 @router.get("/search", response_model=List[JournalSearchResult])
 def search_entries(q: str, skip: int = 0, limit: int = 100,db: Session = Depends(get_db), 
                    current_user = Depends(get_current_user)):

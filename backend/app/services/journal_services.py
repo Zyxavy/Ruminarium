@@ -79,7 +79,13 @@ def delete_journal(db: Session, journal_id: UUID, owner_id: UUID):
     db.delete(db_journal)
     db.commit()
     return db_journal
-    
+
+'''
+Searches for a journal.
+- Relevant results appear first
+- Generates Highlighted snippets
+'''
+
 def search_journals(db: Session, owner_id: UUID, q: str, skip: int = 0, limit: int = 100):
     
     sql = text("""
