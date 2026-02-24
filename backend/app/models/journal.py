@@ -1,6 +1,6 @@
 import uuid
 from sqlalchemy import Column, String, Text, DateTime, ForeignKey
-from sqlalchemy.dialects.postgresql import UUID
+from sqlalchemy.dialects.postgresql import UUID, TSVECTOR
 from sqlalchemy.sql import func
 from sqlalchemy.orm import relationship
 
@@ -21,3 +21,5 @@ class Journal(Base):
     created_at = Column(DateTime(timezone=True),server_default=func.now())
     updated_at = Column(DateTime(timezone=True),onupdate=func.now())
     owner = relationship("User", back_populates="journals")
+
+    search_vector = Column(TSVECTOR)

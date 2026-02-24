@@ -15,7 +15,7 @@ from typing import List
 from uuid import UUID
 
 from ...services import journal_services
-from ...schemas.journal import JournalCreate, JournalRead, JournalUpdate
+from ...schemas.journal import JournalCreate, JournalRead, JournalUpdate, JournalSearchResult
 from ...api.deps import get_current_user
 from ...db.database import get_db
 
@@ -38,6 +38,16 @@ def read_entries(skip: int = 0, limit: int = 100,
                  db: Session = Depends(get_db),
                  current_user = Depends(get_current_user)):
     return journal_services.get_journals(db=db, owner_id=current_user.id, skip=skip, limit=limit)
+
+
+@router.get("/search", response_model=List[JournalSearchResult])
+def search_entries(q: str, skip: int = 0, limit: int = 100,db: Session = Depends(get_db), 
+                   current_user = Depends(get_current_user)):
+    
+    if not q or not q.strip():
+        return []
+    
+    return journal_services.search_journals(db=db, owner_id=current_user.id, q=q, skip=skip, limit=limit)
 
 '''
 Get a specific journal entry by ID, returns the journal entry if found and owned by the current user.
@@ -84,3 +94,4 @@ def delete_entry(journal_id: UUID, db: Session = Depends(get_db), current_user =
                             detail="Journal entry not found")
     
     return db_journal
+

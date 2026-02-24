@@ -9,6 +9,7 @@ All operations are scoped to the authenticated user (owner_id)
 '''
 
 from sqlalchemy.orm import Session
+from sqlalchemy import text
 from uuid import UUID
 
 from ..models.journal import Journal
@@ -79,4 +80,26 @@ def delete_journal(db: Session, journal_id: UUID, owner_id: UUID):
     db.commit()
     return db_journal
     
+def search_journals(db: Session, owner_id: UUID, q: str, skip: int = 0, limit: int = 100):
+    
+    sql = text("""
+        SELECT id, title,
+               ts_rank(search_vector, plainto_tsquery('english', :query)) AS rank,
+               ts_headline(content, plainto_tsquery('english', :query)) AS snippet,
+               created_at
+        FROM journals
+        WHERE search_vector @@ plainto_tsquery('english', :query)
+        AND owner_id = :user_id
+        ORDER BY rank DESC
+        OFFSET :skip
+        LIMIT :limit
+    """)
 
+    results = db.execute(sql, {
+        "query": q,
+        "user_id": str(owner_id),
+        "skip": skip,
+        "limit": limit
+    }).fetchall()
+
+    return results

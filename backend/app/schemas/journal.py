@@ -40,3 +40,15 @@ class JournalRead(JournalBase):
     class Config:
         from_attributes = True
 
+'''
+Schema used for returning ranked results with highlighted snippets
+'''
+class JournalSearchResult(BaseModel):
+    id: UUID
+    title: str
+    snippet: Optional[str] = None
+    created_at: datetime
+    rank: Optional[float] = None
+
+    class Config:
+        from_attributes = True
